@@ -1,8 +1,13 @@
 package com.zee.zee5app.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Max;
@@ -21,13 +26,13 @@ import lombok.ToString;
 
 @Setter
 @Getter
-@EqualsAndHashCode
-@ToString
+//@EqualsAndHashCode
+//@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "seriesname")}, name = "series")
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "seriesName")}, name = "series")
 public class Series implements Comparable<Series> {
 	
 	@Id
@@ -36,10 +41,9 @@ public class Series implements Comparable<Series> {
 	private String id;
 	
     @NotBlank
- 
-	private String seriesname;
+	private String seriesName;
     @NotBlank
-	private String Cast;
+	private String cast;
 	@NotNull
 	private String releaseDate;
 	//@NotBlank
@@ -54,16 +58,17 @@ public class Series implements Comparable<Series> {
 	private String genre;
 
 	@Min(value = 1)
-	private int noofepisodes;
+	private int noofEpisodes;
 	
-	
-
-
 	@Override
 	public int compareTo(Series o) {
 		// TODO Auto-generated method stub
 		return this.id.compareTo(o.getId());
 	}
+	
+	@OneToMany(mappedBy = "series", cascade = CascadeType.ALL)
+	private List<Episodes> episodes = new ArrayList<>();
+	
 
 
 	

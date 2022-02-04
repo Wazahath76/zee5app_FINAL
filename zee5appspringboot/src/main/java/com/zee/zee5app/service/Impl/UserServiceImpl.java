@@ -4,17 +4,23 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.zee.zee5app.dto.Login;
 import com.zee.zee5app.dto.Register;
+import com.zee.zee5app.exception.AlreadyExistsException;
 import com.zee.zee5app.exception.IdNotFoundException;
 import com.zee.zee5app.exception.InvalidEmailException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidNameException;
 import com.zee.zee5app.exception.InvalidPasswordException;
+import com.zee.zee5app.repository.LoginRepository;
 import com.zee.zee5app.repository.UserRepository;
+import com.zee.zee5app.service.LoginService;
 import com.zee.zee5app.service.UserService;
 
 @Service
@@ -22,31 +28,38 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository repository;
+	@Autowired
+	private LoginService service;
+	
+	@Autowired
+	private LoginRepository loginRepository;
 
-//	private UserServiceImpl() throws IOException {
-//		
-//	}
-	// getting repository object through spring
-//    public UserServiceImpl() throws IOException {
-//		
-//	}
-//	
-
-//	private static UserService service;
-//	public static UserService getInstance() throws IOException{
-//		if(service==null)
-//			service = new UserServiceImpl();
-//		return service;
-//	}
 	@Override
-	public String addUser(Register register) {
+	@org.springframework.transaction.annotation.Transactional(rollbackFor = AlreadyExistsException.class)
+	public String addUser(Register register) throws AlreadyExistsException {
 		// TODO Auto-generated method stub
+		//make exception for the next line
+		if(repository.existsByEmailAndContactNumber(register.getEmail(), register.getContactNumber()) == true) {
+			throw new AlreadyExistsException("this record already exists");
+		}
 		Register register2 = repository.save(register);
 		if (register2 != null) {
-			return "record added in register";
-		} else {
+			Login login = new Login(register.getEmail(), register.getPassword(),register2);
+			if(loginRepository.existsByUserName(register.getEmail())) {
+				throw new AlreadyExistsException("this record already exists");
+			}
+			String result = service.addCredentials(login);
+			if(result == "success") {
+					return "record added in register and login";
+			}
+			else {
+				return "fail";
+			}
+		}	
+		else {
 			return "fail";
 		}
+				
 	}
 
 	@Override

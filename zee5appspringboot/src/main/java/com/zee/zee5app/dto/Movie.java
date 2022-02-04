@@ -28,13 +28,13 @@ import lombok.ToString;
 
 @Setter
 @Getter
-@EqualsAndHashCode
-@ToString
+//@EqualsAndHashCode
+//@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "moviename")}, name = "movies")
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "movieName")}, name = "movies")
 public class Movie implements Comparable<Movie>{
 	
 	@Id
@@ -43,9 +43,9 @@ public class Movie implements Comparable<Movie>{
 	private String id;
 	
 	@NotBlank
-	private String moviename;
+	private String movieName;
 	@NotBlank
-	private String Cast;
+	private String cast;
 	private int length;
 	@NotNull
 	private String releaseDate;
@@ -58,11 +58,6 @@ public class Movie implements Comparable<Movie>{
 	@NotBlank
 	private String genre;
 	
-	
-	
-	
-	
-
 	@Override
 	public int compareTo(Movie o) {
 		// TODO Auto-generated method stub
