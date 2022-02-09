@@ -1,16 +1,15 @@
 package com.zee.zee5app.repository.Impl;
 
+
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.naming.NameNotFoundException;
 
@@ -22,7 +21,11 @@ import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.repository.MovieRepository;
 import com.zee.zee5app.utils.DBUtils;
 
+@lombok
+
+@DBUtils
 @Repository
+ 
 public class MovieRepositoryImpl implements MovieRepository {
 	
 	private static MovieRepository repository;

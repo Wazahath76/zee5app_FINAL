@@ -24,7 +24,7 @@ import com.zee.zee5app.service.Impl.UserServiceImpl;
 
 public class MainSpring {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InvalidIdLengthException {
 		
 		//we need to establish or create spring environment
 		// this will kick start or spring application
@@ -61,7 +61,9 @@ public class MainSpring {
 			register.setContactnumber(new BigDecimal("9813973123"));
 			
             System.out.println(userRepository.addUser(register));
-		} catch (InvalidIdLengthException | InvalidNameException | InvalidEmailException | InvalidPasswordException e) {
+		} 
+		
+		catch (InvalidNameException | InvalidEmailException | InvalidPasswordException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		
